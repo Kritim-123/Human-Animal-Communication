@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DOGBRIDGE_DATABASE_URL=sqlite:///./dogbridge.db
+      - DOGBRIDGE_RAW_DATA_DIR=/app/data/raw
+      - DOGBRIDGE_MODEL_PATH=/app/data/models/dogbridge_baseline.joblib
+

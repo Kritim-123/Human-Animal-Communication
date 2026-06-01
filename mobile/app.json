@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "DogBridge",
+    "slug": "dogbridge",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "DogBridge records dog audio clips when you choose to collect training examples."
+      }
+    },
+    "android": {
+      "permissions": ["RECORD_AUDIO"]
+    }
+  }
+}
+
