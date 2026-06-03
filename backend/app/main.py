@@ -1,4 +1,5 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
 from app.routes import clips, dogs, predictions
@@ -8,6 +9,14 @@ app = FastAPI(
     title="DogBridge API",
     description="Personalized dog-human likely intent estimation API. It estimates possible intent; it does not translate dog language.",
     version="0.1.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -49,4 +58,3 @@ async def websocket_predict(websocket: WebSocket):
 app.include_router(dogs.router)
 app.include_router(clips.router)
 app.include_router(predictions.router)
-

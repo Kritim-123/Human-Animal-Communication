@@ -16,6 +16,10 @@ backend/data/processed/*
 !backend/data/processed/.gitkeep
 backend/data/models/*
 !backend/data/models/.gitkeep
+backend/data/public/audio/*
+!backend/data/public/audio/.gitkeep
+backend/data/public/manifests/*
+!backend/data/public/manifests/.gitkeep
 node_modules/
 .expo/
 dist/
@@ -23,4 +27,3 @@ build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-

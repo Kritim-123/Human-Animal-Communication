@@ -12,8 +12,12 @@
       }
     },
     "android": {
-      "permissions": ["RECORD_AUDIO"]
-    }
+      "permissions": [
+        "RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "expo-asset"
+    ]
   }
 }
-

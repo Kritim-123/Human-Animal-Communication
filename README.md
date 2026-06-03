@@ -106,6 +106,25 @@ python -m scripts.train_baseline --features-csv data/processed/features.csv
 
 The model is saved to `backend/data/models/dogbridge_baseline.joblib`.
 
+## Public Dog Audio Datasets
+
+Public datasets can help DogBridge learn general dog audio structure, but they should not be treated as direct labels for owner intent. See [PUBLIC_DATASETS.md](docs/PUBLIC_DATASETS.md).
+
+For a start-to-finish research workflow, use [DogSpeak_YAMNet_Pipeline.ipynb](notebooks/DogSpeak_YAMNet_Pipeline.ipynb). It downloads DogSpeak from Hugging Face, builds a public manifest, extracts YAMNet embeddings, and trains quick sanity-check classifiers.
+
+After downloading DogSpeak locally, build a separate public-data manifest:
+
+```bash
+cd dogbridge/backend
+python -m scripts.build_public_manifest \
+  --dataset dogspeak \
+  --input-metadata data/public/audio/DogSpeak/metadata.csv \
+  --audio-root data/public/audio/DogSpeak \
+  --output-csv data/public/manifests/dogspeak_manifest.csv
+```
+
+Downloaded public audio stays ignored by Git. Public manifests are tracked only when intentionally added.
+
 ## Run The Mobile Skeleton
 
 ```bash
@@ -114,7 +133,19 @@ npm install
 npm start
 ```
 
-The Expo app contains simple screens for dog profile setup, recording flow placeholder, context labeling, submission, prediction review, and confirmation.
+The Expo app contains screens for dog profile setup, real audio recording, context labeling, clip upload, prediction review, confirmation, and basic dataset progress.
+
+For simulator or local web development, the default API URL is `http://127.0.0.1:8000`.
+
+For a physical phone on your Wi-Fi network, start the backend on all interfaces and point Expo at your computer's LAN address:
+
+```bash
+cd dogbridge/backend
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+cd ../mobile
+EXPO_PUBLIC_DOGBRIDGE_API_URL=http://YOUR_LAN_IP:8000 npm run start:lan
+```
 
 ## Current Limitations
 
@@ -132,4 +163,3 @@ The Expo app contains simple screens for dog profile setup, recording flow place
 - Add mobile audio capture and upload.
 - Add collar IMU and phone camera posture signals.
 - Build real-time WebSocket inference after clip-based inference is useful.
-

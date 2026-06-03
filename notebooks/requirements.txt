@@ -1,0 +1,14 @@
+jupyter
+ipykernel
+huggingface_hub
+pandas
+numpy
+librosa
+soundfile
+scikit-learn
+matplotlib
+tqdm
+pyarrow
+tensorflow
+tensorflow-hub
+
