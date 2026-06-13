@@ -112,6 +112,8 @@ Public datasets can help DogBridge learn general dog audio structure, but they s
 
 For a start-to-finish research workflow, use [DogSpeak_YAMNet_Pipeline.ipynb](notebooks/DogSpeak_YAMNet_Pipeline.ipynb). It downloads DogSpeak from Hugging Face, builds a public manifest, extracts YAMNet embeddings, and trains quick sanity-check classifiers.
 
+The notebook is Colab-friendly: run its setup cell first to install [notebook requirements](notebooks/requirements.txt), locate an existing checkout, or clone the repo into the runtime. Set `USE_GOOGLE_DRIVE = True` in that cell if you want Colab to mount Drive and keep downloaded data between sessions.
+
 After downloading DogSpeak locally, build a separate public-data manifest:
 
 ```bash
