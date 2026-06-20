@@ -31,12 +31,17 @@ def build_dogspeak_manifest(input_metadata: Path, audio_root: Path, output_csv: 
     if missing:
         raise SystemExit(f"DogSpeak metadata is missing required columns: {sorted(missing)}")
 
+    audio_extensions = {".wav", ".m4a", ".mp3", ".flac", ".ogg"}
+    audio_index: dict[str, str] = {}
+    for path in audio_root.rglob("*"):
+        if path.is_file() and path.suffix.lower() in audio_extensions:
+            audio_index.setdefault(path.name, str(path))
+
     rows = []
     for _, item in metadata.iterrows():
         filename = str(item["filename"])
         dog_id = str(item["dog_id"])
-        candidate_paths = list(audio_root.rglob(filename))
-        file_path = str(candidate_paths[0]) if candidate_paths else str(audio_root / dog_id / filename)
+        file_path = audio_index.get(filename, str(audio_root / dog_id / filename))
         rows.append(
             {
                 "source_dataset": "DogSpeak",
@@ -82,4 +87,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
