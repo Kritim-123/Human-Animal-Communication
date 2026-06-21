@@ -32,17 +32,16 @@ def build_dogspeak_manifest(input_metadata: Path, audio_root: Path, output_csv: 
     if missing:
         raise SystemExit(f"DogSpeak metadata is missing required columns: {sorted(missing)}")
 
-    audio_extensions = {".wav", ".m4a", ".mp3", ".flac", ".ogg"}
-    audio_index: dict[str, str] = {}
-    for path in audio_root.rglob("*"):
-        if path.is_file() and path.suffix.lower() in audio_extensions:
-            audio_index.setdefault(path.name, str(path))
-
     rows = []
     for _, item in metadata.iterrows():
         filename = str(item["filename"])
         dog_id = str(item["dog_id"])
-        file_path = audio_index.get(filename, str(audio_root / dog_id / filename))
+        source_file_path = ""
+        for column in ["file_path", "path", "audio", "audio_path"]:
+            if column in metadata.columns and pd.notna(item[column]):
+                source_file_path = str(item[column])
+                break
+        file_path = str(audio_root / source_file_path) if source_file_path else str(audio_root / dog_id / filename)
         rows.append(
             {
                 "source_dataset": "DogSpeak",
@@ -57,7 +56,7 @@ def build_dogspeak_manifest(input_metadata: Path, audio_root: Path, output_csv: 
                 "context_label": "",
                 "intent_label": "",
                 "usable_for_intent": False,
-                "file_exists": filename in audio_index,
+                "file_exists": False,
                 "notes": "Public canine vocalization data. Use for acoustic representation learning, not DogBridge intent labels.",
             }
         )
@@ -81,10 +80,8 @@ def main() -> None:
     else:
         raise SystemExit(f"Unsupported dataset: {args.dataset}")
 
-    missing_files = sum(1 for path in frame["file_path"] if not Path(path).exists())
     print(f"Wrote {len(frame)} public audio rows to {args.output_csv}")
-    if missing_files:
-        print(f"Warning: {missing_files} manifest files were not found under {args.audio_root}.")
+    print("File existence is not checked here to avoid slow scans on mounted drives.")
 
 
 if __name__ == "__main__":
