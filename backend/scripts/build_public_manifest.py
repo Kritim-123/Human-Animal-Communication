@@ -17,6 +17,7 @@ PUBLIC_MANIFEST_COLUMNS = [
     "context_label",
     "intent_label",
     "usable_for_intent",
+    "file_exists",
     "notes",
 ]
 
@@ -56,6 +57,7 @@ def build_dogspeak_manifest(input_metadata: Path, audio_root: Path, output_csv: 
                 "context_label": "",
                 "intent_label": "",
                 "usable_for_intent": False,
+                "file_exists": filename in audio_index,
                 "notes": "Public canine vocalization data. Use for acoustic representation learning, not DogBridge intent labels.",
             }
         )
