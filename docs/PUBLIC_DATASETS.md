@@ -4,6 +4,18 @@ DogBridge can use public dog vocalization datasets to learn general canine audio
 
 The main DogBridge intent model should remain personalized and trained on owner-confirmed clips collected through the app.
 
+## Project Audio Data
+
+DogBridge project dog audio is stored outside Git because raw audio files can become large. Use the shared Google Drive folder to download the current dog sound data when setting up the project on another computer:
+
+- Dog sound data: https://drive.google.com/drive/folders/1aoFB8WVgKm0x0VlXifzbX9Dxm5M-LnOi?usp=share_link
+
+Suggested local destination after download:
+
+```text
+backend/data/raw/chihuahua/
+```
+
 ## Recommended Use
 
 Use public data for:
@@ -88,4 +100,3 @@ This keeps the project scientifically honest while still letting us benefit from
 4. Train a public-data acoustic representation model.
 5. Train dog-specific intent models only from owner-confirmed DogBridge clips.
 6. Compare MFCC baseline vs YAMNet embeddings vs transformer embeddings.
-
