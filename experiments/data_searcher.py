@@ -10,6 +10,7 @@ FILENAME_PATTERN = re.compile(
     re.IGNORECASE,
 )
 DOG_FOLDER_PATTERN = re.compile(r"^dog_\d+$", re.IGNORECASE)
+NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
 def repo_root() -> Path:
@@ -42,7 +43,18 @@ def parse_audio_filename(audio_path: Path) -> dict[str, str]:
 
 
 def find_audio_files(input_dir: Path) -> list[Path]:
-    return sorted(path for path in input_dir.rglob("*") if path.suffix.lower() in SUPPORTED_AUDIO)
+    return sorted(
+        (path for path in input_dir.rglob("*") if path.suffix.lower() in SUPPORTED_AUDIO),
+        key=natural_sort_key,
+    )
+
+
+def natural_sort_key(path: Path) -> list[int | str]:
+    parts = []
+    for piece in path.relative_to(path.anchor).parts:
+        for token in NATURAL_SORT_PATTERN.split(piece.lower()):
+            parts.append(int(token) if token.isdigit() else token)
+    return parts
 
 
 def build_manifest(input_dir: Path, output_csv: Path) -> list[dict[str, str]]:
