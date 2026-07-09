@@ -7,6 +7,8 @@ __pycache__/
 .ipynb_checkpoints/
 *.ipynb_checkpoints/
 .venv/
+.venv311-yamnet/
+.python311/
 venv/
 env/
 *.db
